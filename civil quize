@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RRB JE CBT-2 Civil Mock Test</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f2f4f8;
+  padding:20px;
+}
+h1{text-align:center;color:#1a237e}
+.timer{
+  text-align:center;
+  font-size:20px;
+  color:#c62828;
+  font-weight:bold;
+}
+.question-box{
+  background:#fff;
+  padding:15px;
+  margin-top:15px;
+  border-radius:6px;
+}
+.options button{
+  display:block;
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border:none;
+  background:#3949ab;
+  color:#fff;
+  cursor:pointer;
+}
+.options button:hover{background:#1a237e}
+.result{
+  background:#e8f5e9;
+  padding:20px;
+  margin-top:20px;
+  border-radius:6px;
+}
+</style>
+
+<script>
+let current=0;
+let correct=0;
+let negative=0;
+let time=120*60;   // 120 minutes
+let timer;
+
+function startTimer(){
+  timer=setInterval(()=>{
+    let m=Math.floor(time/60);
+    let s=time%60;
+    document.getElementById("timer").innerHTML=
+      "Time Left : "+m+" min "+s+" sec";
+    time--;
+    if(time<0){
+      clearInterval(timer);
+      submitTest();
+    }
+  },1000);
+}
+
+function showQuestion(){
+  let q=questions[current];
+  document.getElementById("qno").innerHTML=
+    "Question "+(current+1)+" / "+questions.length;
+  document.getElementById("qtext").innerHTML=q.q;
+
+  let html="";
+  q.o.forEach((op,i)=>{
+    html+=`<button onclick="checkAnswer(${i})">${op}</button>`;
+  });
+  document.getElementById("options").innerHTML=html;
+}
+
+function checkAnswer(i){
+  if(i===questions[current].a){
+    correct++;
+  }else{
+    negative+=0.33;
+  }
+  current++;
+  if(current<questions.length){
+    showQuestion();
+  }else{
+    submitTest();
+  }
+}
+
+function submitTest(){
+  document.getElementById("test").style.display="none";
+  document.getElementById("result").style.display="block";
+  let score=(correct-negative).toFixed(2);
+  document.getElementById("final").innerHTML=
+    "Correct : "+correct+
+    "<br>Negative Marks : "+negative.toFixed(2)+
+    "<br><b>Final Score : "+score+"</b>";
+}
+</script>
+</head>
+
+<body onload="startTimer();showQuestion();">
+
+<h1>RRB JE CBT-2 Civil Engineering – Mock Test</h1>
+<div class="timer" id="timer"></div>
+
+<div id="test">
+<h3 id="qno"></h3>
+<div class="question-box">
+  <p id="qtext"></p>
+  <div class="options" id="options"></div>
+</div>
+</div>
+
+<div id="result" class="result" style="display:none">
+<h2>Result</h2>
+<p id="final"></p>
+<p>
+✔ +1 for correct<br>
+❌ −0.33 for wrong<br>
+⭕ 0 for unattempted
+</p>
+</div>
+
+<script>
+/* ===============================
+   ADD QUESTIONS BELOW (UP TO 100)
+   =============================== */
+
+const questions=[
+  {q:"Soundness of cement is tested by:",o:["Vicat","Le-Chatelier","Sieve","Compression"],a:1},
+  {q:"Plasticity index is:",o:["LL-PL","PL-LL","WL+PL","WL-SL"],a:0}
+  /* ===== BUILDING MATERIALS ===== */
+{q:"Fineness modulus is related to:",o:["Cement","Sand","Aggregate","Water"],a:2},
+{q:"Specific gravity of cement is about:",o:["2.15","2.5","3.15","3.85"],a:2},
+{q:"Bricks are burnt in:",o:["Clamp","Kiln","Furnace","Oven"],a:1},
+{q:"Standard size of brick (IS):",o:["190×90×90 mm","230×110×75 mm","200×100×100 mm","250×120×75 mm"],a:1},
+{q:"Efflorescence in bricks is due to:",o:["Sulphates","Chlorides","Salts","Lime"],a:2},
+
+/* ===== RCC & DESIGN ===== */
+{q:"Minimum grade of steel used in RCC:",o:["Fe250","Fe415","Fe500","Fe550"],a:0},
+{q:"Main reinforcement in slab is placed along:",o:["Longer span","Shorter span","Diagonal","Edge"],a:1},
+{q:"Partial safety factor for concrete:",o:["1.15","1.5","1.25","2.0"],a:1},
+{q:"Compression members are called:",o:["Beams","Columns","Slabs","Footings"],a:1},
+{q:"Limit state of serviceability relates to:",o:["Collapse","Cracking","Deflection","All"],a:3},
+
+/* ===== SOIL MECHANICS ===== */
+{q:"SP soil indicates:",o:["Poorly graded sand","Well graded sand","Silty sand","Clayey sand"],a:0},
+{q:"Water content test uses:",o:["Oven","Desiccator","Pycnometer","Hydrometer"],a:0},
+{q:"Shrinkage limit is the water content below which:",o:["No volume change","Volume increases","Soil cracks","Soil flows"],a:0},
+{q:"Consolidation occurs mainly in:",o:["Sand","Gravel","Clay","Silt"],a:2},
+{q:"Terzaghi is related to:",o:["Bearing capacity","Consolidation","Earth pressure","All"],a:3},
+
+/* ===== FOUNDATION ===== */
+{q:"Isolated footing supports:",o:["One column","Two columns","Wall","Beam"],a:0},
+{q:"Combined footing is used when:",o:["Columns are close","Soil is strong","Load is small","Depth is more"],a:0},
+{q:"Raft foundation is also called:",o:["Pile","Mat","Strip","Pad"],a:1},
+{q:"Skin friction pile transfers load by:",o:["Tip","Surface","Base","End"],a:1},
+{q:"Pile cap is provided to:",o:["Distribute load","Increase depth","Reduce load","Decorate"],a:0},
+
+/* ===== FLUID MECHANICS ===== */
+{q:"Unit weight of water:",o:["9.81 kN/m³","10 kN/m³","1 kN/m³","1000 N"],a:0},
+{q:"Viscosity causes:",o:["Flow","Resistance","Pressure","Velocity"],a:1},
+{q:"Venturimeter measures:",o:["Pressure","Velocity","Discharge","Head loss"],a:2},
+{q:"Hydraulic gradient line represents:",o:["Pressure head","Velocity head","Total head","Datum head"],a:0},
+{q:"Flow in pipes is laminar if Re < :",o:["1000","2000","3000","4000"],a:1},
+
+/* ===== IRRIGATION ===== */
+{q:"Delta is related to:",o:["Discharge","Duty","Crop period","All"],a:3},
+{q:"Most water-efficient method:",o:["Flood","Basin","Sprinkler","Drip"],a:3},
+{q:"Weir is used to measure:",o:["Velocity","Depth","Discharge","Pressure"],a:2},
+{q:"Canal falls are provided to:",o:["Increase velocity","Reduce slope","Control erosion","Store water"],a:2},
+{q:"Water logging occurs due to:",o:["Over irrigation","Poor drainage","High water table","All"],a:3},
+
+/* ===== ENVIRONMENTAL ===== */
+{q:"COD measures:",o:["Biological oxygen","Chemical oxygen","Dissolved oxygen","Total oxygen"],a:1},
+{q:"Primary treatment of sewage is:",o:["Physical","Chemical","Biological","Disinfection"],a:0},
+{q:"Slow sand filter removes:",o:["Color","Bacteria","Taste","Hardness"],a:1},
+{q:"Noise above permissible limit causes:",o:["Stress","Hearing loss","Fatigue","All"],a:3},
+{q:"Solid waste disposal method:",o:["Landfill","Incineration","Composting","All"],a:3},
+
+/* ===== TRANSPORTATION ===== */
+{q:"Super-elevation is provided on:",o:["Straight road","Bridge","Horizontal curve","Vertical curve"],a:2},
+{q:"Maximum superelevation in plains:",o:["1 in 15","1 in 20","1 in 25","1 in 30"],a:1},
+{q:"Pavement thickness depends on:",o:["Traffic","CBR","Subgrade","All"],a:3},
+{q:"Flexible pavement stress is maximum at:",o:["Top","Bottom","Middle","Uniform"],a:1},
+{q:"Rigid pavement is made of:",o:["Bitumen","Cement concrete","Gravel","Soil"],a:1},
+
+/* ===== SURVEYING ===== */
+{q:"Temporary bench mark is used during:",o:["Design","Construction","Maintenance","Mapping"],a:1},
+{q:"Theodolite measures:",o:["Distance","Angle","Height","Area"],a:1},
+{q:"Planimeter measures:",o:["Length","Area","Volume","Height"],a:1},
+{q:"Closed traverse is preferred for:",o:["Accuracy","Speed","Cost","Ease"],a:0},
+{q:"Magnetic bearing is measured with:",o:["Level","Compass","Theodolite","Chain"],a:1}
+/* ===== STRUCTURAL ANALYSIS ===== */
+{q:"Degree of indeterminacy of simply supported beam:",o:["0","1","2","3"],a:0},
+{q:"Shear force is maximum at:",o:["Mid-span","Support","Quarter span","Anywhere"],a:1},
+{q:"Bending moment at free end of cantilever:",o:["Maximum","Zero","Negative","Positive"],a:1},
+{q:"Conjugate beam method is used to find:",o:["Slope","Deflection","Reaction","Stress"],a:1},
+{q:"Moment distribution method is used for:",o:["Statically determinate","Indeterminate","Truss","Frames only"],a:1},
+
+/* ===== STEEL STRUCTURES ===== */
+{q:"Minimum pitch of rivets should not be less than:",o:["2d","2.5d","3d","4d"],a:2},
+{q:"Efficiency of joint is ratio of:",o:["Strength of joint to plate","Plate to joint","Rivet to plate","None"],a:0},
+{q:"Slenderness ratio = ?",o:["L/r","r/L","L×r","L²/r"],a:0},
+{q:"Buckling failure occurs due to:",o:["Shear","Tension","Compression","Bending"],a:2},
+{q:"ISI section designation gives:",o:["Depth","Weight","Width","All"],a:3},
+
+/* ===== BRIDGE ENGINEERING ===== */
+{q:"Deck slab bridges are suitable for span up to:",o:["5 m","10 m","15 m","20 m"],a:1},
+{q:"Culvert span is generally:",o:["< 6 m","6–10 m","10–20 m",">20 m"],a:0},
+{q:"IRC Class AA loading is used for:",o:["Village roads","State highways","National highways","Railways"],a:2},
+{q:"Wearing coat on bridge deck is provided to:",o:["Increase strength","Reduce impact","Protect deck","Decorate"],a:2},
+{q:"Skew bridge angle is measured between:",o:["Pier & abutment","Road & river","Center lines","Span & deck"],a:1},
+
+/* ===== TUNNEL & GEO-TECH ===== */
+{q:"Rock quality designation (RQD) is expressed in:",o:["%","m","cm","kg"],a:0},
+{q:"Soft ground tunneling requires:",o:["Blasting","Shield","TBM","Drilling"],a:1},
+{q:"Lining thickness of tunnel depends on:",o:["Rock","Diameter","Depth","All"],a:3},
+{q:"Drainage in tunnels is necessary to prevent:",o:["Collapse","Seepage","Pressure","All"],a:3},
+{q:"Ventilation in tunnels is needed for:",o:["Light","Oxygen","Smoke removal","All"],a:3},
+
+/* ===== CONSTRUCTION PLANNING ===== */
+{q:"Earliest start time is calculated by:",o:["Backward pass","Forward pass","Float","Lag"],a:1},
+{q:"Latest finish time is calculated by:",o:["Forward pass","Backward pass","Float","Crash"],a:1},
+{q:"Crashing a project increases:",o:["Time","Cost","Quality","Risk"],a:1},
+{q:"Resource leveling is done to:",o:["Reduce duration","Optimize resources","Reduce cost","Increase float"],a:1},
+{q:"Network diagram shows:",o:["Sequence","Time","Cost","All"],a:3},
+
+/* ===== QUALITY & SAFETY ===== */
+{q:"Quality control in construction ensures:",o:["Speed","Strength","Standard","Profit"],a:2},
+{q:"Cube test of concrete is done at:",o:["3 days","7 days","28 days","All"],a:3},
+{q:"Safety helmet protects from:",o:["Electric shock","Falling objects","Noise","Dust"],a:1},
+{q:"First aid on site is required for:",o:["Accident","Illness","Emergency","All"],a:3},
+{q:"IS 456 is related to:",o:["Steel","Concrete","Soil","Bricks"],a:1},
+
+/* ===== CURRENT EXAM-ORIENTED ===== */
+{q:"RRB JE CBT-2 is mainly based on:",o:["Theory","Numericals","Concepts","All"],a:3},
+{q:"Negative marking per wrong answer:",o:["0.25","0.33","0.5","1"],a:1},
+{q:"Total questions in CBT-2 (Civil approx):",o:["100","120","150","200"],a:2},
+{q:"Time duration of CBT-2 exam:",o:["90 min","100 min","120 min","150 min"],a:2},
+{q:"Best strategy for CBT-2 is:",o:["Speed","Accuracy","Guessing","All"],a:1}
+
+];
+</script>
+
+</body>
+</html>
